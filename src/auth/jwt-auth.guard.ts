@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, UnauthorizedException, Injectable } from
 import { Reflector } from '@nestjs/core'
 import { JwtService } from '@nestjs/jwt'
 import { Observable } from 'rxjs'
+import { CHECK_USER_KEY } from './jwt-auth.decorator'
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
@@ -10,7 +11,7 @@ export class JwtAuthGuard implements CanActivate {
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         const req = context.switchToHttp().getRequest()
         try {
-            const checkUser = this.reflector.get<boolean>('checkUser', context.getHandler())
+            const checkUser = this.reflector.get<boolean>(CHECK_USER_KEY, context.getHandler())
             const authHeader = req.headers.authorization
             if (checkUser) return this.checkUser(authHeader, req)
             return this.defaultGuard(authHeader, req)

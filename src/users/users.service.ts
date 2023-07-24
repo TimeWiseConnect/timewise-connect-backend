@@ -16,49 +16,6 @@ export class UsersService {
         return user
     }
 
-    // async getAllUsers(limit = 20, offset = 0, titles = null) {
-    //     let game: Game
-    //     let usersObjects: User[]
-    //     if (titles != null && titles.length != 0) {
-    //         usersObjects = await this.userRepository.findAll({
-    //             include: [
-    //                 {
-    //                     model: Game,
-    //                     as: 'searches',
-    //                     where: {
-    //                         title: titles,
-    //                     },
-    //                 },
-    //                 {
-    //                     model: Game,
-    //                     as: 'games',
-    //                 },
-    //             ],
-    //             offset,
-    //             limit,
-    //         })
-    //     } else
-    //         usersObjects = await this.userRepository.findAll({
-    //             include: {
-    //                 all: true,
-    //             },
-    //             offset,
-    //             limit,
-    //         })
-    //     // const users = usersObjects.map((user) => {
-    //     //   return { email: user.email, role: user.roles.map((role) => role.value) }
-    //     // })
-    //     const users = usersObjects.map((user) => {
-    //         return {
-    //             username: user.username,
-    //             description: user.description,
-    //             searches: user.searches,
-    //             games: user.games,
-    //         }
-    //     })
-    //     return users
-    // }
-
     async getUserByPhone(phone: string): Promise<User> {
         const user = await this.userRepository.findOne({ where: { phone }, include: { all: true } })
         return user
@@ -68,45 +25,6 @@ export class UsersService {
         const user = await this.userRepository.findOne({ where: { id }, include: { all: true } })
         return user
     }
-
-    // async getUserGames(username: string) {
-    //     const user = await this.userRepository.findOne({ where: { username }, include: { all: true } })
-    //     if (!user) throw new BadRequestException("User doesn't exist")
-    //     return {
-    //         username: user.username,
-    //         description: user.description,
-    //         games: user.games.map((game) => game.title),
-    //         searches: user.searches.map((search) => search.title),
-    //     }
-    // }
-
-    // async playGame(currentUser: User, id: number, playing: boolean) {
-    //     const game = await this.gameService.getGameById(id)
-    //     if (!game) throw new BadRequestException("Game doesn't exist")
-    //     const user = await this.getUserById(currentUser.id)
-    //     if (playing) {
-    //         await user.$set('games', [...user.games.map((game) => game.id), game.id])
-    //         return { message: 'Game added' }
-    //     } else {
-    //         await user.$set('games', [...user.games.filter((userGame) => userGame.id != game.id)])
-    //         await user.$set('searches', [...user.searches.filter((userGame) => userGame.id != game.id)])
-    //         return { message: 'Game removed' }
-    //     }
-    // }
-
-    // async searchForTeam(currentUser: User, id: number, searching: boolean) {
-    //     const game = await this.gameService.getGameById(id)
-    //     if (!game) throw new BadRequestException("Game doesn't exist")
-    //     const user = await this.getUserById(currentUser.id)
-    //     if (searching) {
-    //         await user.$set('games', [...user.games.map((game) => game.id), game.id])
-    //         await user.$set('searches', [...user.searches.map((search) => search.id), game.id])
-    //         return { message: 'Game added' }
-    //     } else {
-    //         await user.$set('searches', [...user.searches.filter((userGame) => userGame.id != game.id)])
-    //         return { message: 'Game removed' }
-    //     }
-    // }
 
     // async editUserInfo(currentUser: User, newUserInfo: User) {
     //     if (newUserInfo.username == null) throw new BadRequestException(`Username couldn't be empty`)

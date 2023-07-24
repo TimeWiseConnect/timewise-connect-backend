@@ -10,6 +10,8 @@ import { Role } from './roles/role.model'
 import { User } from './users/user.model'
 import { UserRoles } from './roles/user-roles.model'
 import { Children } from './childrens/children.model'
+import { PhoneCodes } from './phoneCodes/phoneCodes.model'
+import { PhoneCodesModule } from './phoneCodes/phoneCodes.module'
 
 @Module({
     imports: [
@@ -23,13 +25,14 @@ import { Children } from './childrens/children.model'
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [Event, User, Children, Role, UserRoles],
+            models: [Event, User, PhoneCodes, Children, Role, UserRoles],
             autoLoadModels: true,
         }),
         UsersModule,
         EventsModule,
         RolesModule,
         AuthModule,
+        PhoneCodesModule,
     ],
     controllers: [],
     providers: [],

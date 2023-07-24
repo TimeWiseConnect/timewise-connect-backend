@@ -1,3 +1,5 @@
 import { SetMetadata } from '@nestjs/common'
 
-export const checkUser = () => SetMetadata('checkUser', true)
+export const CHECK_USER_KEY = 'checkUser'
+
+export const checkUser = () => SetMetadata(CHECK_USER_KEY, true)

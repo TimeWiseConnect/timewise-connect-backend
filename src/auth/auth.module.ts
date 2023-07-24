@@ -3,16 +3,21 @@ import { JwtModule } from '@nestjs/jwt'
 import { UsersModule } from 'src/users/users.module'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
+import { PhoneCodes } from '../phoneCodes/phoneCodes.model'
+import { SequelizeModule } from '@nestjs/sequelize'
+import { PhoneCodesModule } from 'src/phoneCodes/phoneCodes.module'
 
 @Module({
     controllers: [AuthController],
     providers: [AuthService],
     imports: [
+        SequelizeModule.forFeature([PhoneCodes]),
         forwardRef(() => UsersModule),
+        PhoneCodesModule,
         JwtModule.register({
             secret: process.env.PRIVATE_KEY || 'SECRET',
             signOptions: {
-                expiresIn: '24h',
+                expiresIn: '2w',
             },
         }),
     ],
