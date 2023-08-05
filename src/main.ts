@@ -8,7 +8,7 @@ const start = async () => {
         const app = await NestFactory.create(AppModule)
         app.enableCors()
         const config = new DocumentBuilder()
-            .setTitle('Play2GetHer')
+            .setTitle('TimeWise Connect')
             .setDescription('REST API documentation')
             .setVersion('1.0.0')
             .addTag('awqsomee')
