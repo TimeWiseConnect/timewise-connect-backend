@@ -9,4 +9,3 @@ build:
 
 run:
     command: npm run start
-    args: listen_addresses=0.0.0.0
