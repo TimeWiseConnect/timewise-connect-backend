@@ -4,11 +4,6 @@ meta:
         name: npm
         version: 18
 
-    environment: db
-    toolchain:
-      name: postgresql
-      version: 13
-
 build:
     additionalCommands: npm run build
 
