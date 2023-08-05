@@ -3,8 +3,8 @@ export class UserEvent {
     dateTime: Date
     name: string
     isAvailable: boolean
-    isApproved: boolean
     request: string
     phone: string
-    childGrade: number
+    grade: number
+    userId: number
 }

@@ -9,7 +9,6 @@ import { AuthModule } from './auth/auth.module'
 import { Role } from './roles/role.model'
 import { User } from './users/user.model'
 import { UserRoles } from './roles/user-roles.model'
-import { Children } from './childrens/children.model'
 import { PhoneCodes } from './phoneCodes/phoneCodes.model'
 import { PhoneCodesModule } from './phoneCodes/phoneCodes.module'
 
@@ -25,7 +24,7 @@ import { PhoneCodesModule } from './phoneCodes/phoneCodes.module'
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [Event, User, PhoneCodes, Children, Role, UserRoles],
+            models: [Event, User, PhoneCodes, Role, UserRoles],
             autoLoadModels: true,
         }),
         UsersModule,

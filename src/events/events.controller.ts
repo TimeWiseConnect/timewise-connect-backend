@@ -19,10 +19,9 @@ export class EventsController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @checkUser()
     @Post(':id')
     add(@Body() eventDto: AddEventDto, @Req() req, @Param('id') id: number) {
-        return this.eventService.addEvent(req?.user, eventDto, id)
+        return this.eventService.addEvent(req.user, eventDto, id)
     }
 
     @UseGuards(JwtAuthGuard)
@@ -38,24 +37,10 @@ export class EventsController {
     }
 
     @UseGuards(RolesGuard)
-    @Roles('ADMIN')
-    @Post('/approve/:id')
-    approve(@Param('id') id: number) {
-        return this.eventService.approveEvent(id)
-    }
-
-    @UseGuards(RolesGuard)
-    @Roles('ADMIN')
-    @Post('/deny/:id')
-    deny(@Param('id') id: number) {
-        return this.eventService.denyEvent(id)
-    }
-
-    @UseGuards(RolesGuard)
-    @Roles('ADMIN')
+    @Roles('ADMIN', 'USER')
     @Post('/clear/:id')
-    clear(@Param('id') id: number) {
-        return this.eventService.clearEvent(id)
+    clear(@Param('id') id: number, @Req() req) {
+        return this.eventService.clearEvent(id, req.user)
     }
 
     @UseGuards(RolesGuard)

@@ -15,12 +15,12 @@ export class AuthService {
 
     async registration(userDto: RegistrationDto, userIp: string) {
         const phone = userDto.phone.replace(/\D/g, '')
-        if (phone.length !== 11) throw new HttpException(`Укажите корректный номер телефона`, HttpStatus.BAD_REQUEST)
+        if (phone.length !== 10) throw new HttpException(`Укажите корректный номер телефона`, HttpStatus.BAD_REQUEST)
         if (!userDto.name) throw new HttpException(`Укажите ваше имя`, HttpStatus.BAD_REQUEST)
 
         const candidate = await this.userService.getUserByPhone(phone)
         if (candidate)
-            throw new HttpException(`Пользователь с номером "${userDto.phone}" уже существует`, HttpStatus.BAD_REQUEST)
+            throw new HttpException(`Пользователь с номером +7${userDto.phone} уже существует`, HttpStatus.BAD_REQUEST)
 
         await this.userService.createUser({
             ...userDto,
@@ -34,10 +34,13 @@ export class AuthService {
     async login(userDto: LogInDto, userIp: string) {
         const phone = userDto.phone.replace(/\D/g, '')
 
-        if (phone.length !== 11) throw new HttpException(`Укажите корректный номер телефона`, HttpStatus.BAD_REQUEST)
+        if (phone.length !== 10) throw new HttpException(`Укажите корректный номер телефона`, HttpStatus.BAD_REQUEST)
 
         const user = await this.userService.getUserByPhone(phone)
-        if (!user) throw new HttpException(`Пользователь не найден`, HttpStatus.BAD_REQUEST)
+        if (!user)
+            await this.userService.createUser({
+                phone: phone,
+            })
 
         this.phoneCodesService.callUser(phone, userIp)
         return
@@ -56,16 +59,21 @@ export class AuthService {
         }
     }
 
+    async getRoles(userId: number) {
+        const user = await this.userService.getUserById(userId)
+        return user.roles[0].value
+    }
+
     async validateUser(userDto: ValidateUserDto): Promise<any> {
         const phone = userDto.phone.replace(/\D/g, '')
-        if (phone.length !== 11) throw new HttpException(`Указан некорректный номер телефона`, HttpStatus.BAD_REQUEST)
+        if (phone.length !== 10) throw new HttpException(`Указан некорректный номер телефона`, HttpStatus.BAD_REQUEST)
 
         const user = await this.userService.getUserByPhone(phone)
         if (!user) throw new HttpException(`Пользователь не найден`, HttpStatus.BAD_REQUEST)
         const phoneCode = await this.phoneCodesService.getPhoneCode(phone)
 
         if (new Date() > phoneCode?.expiresAt) throw new HttpException(`Код истек`, HttpStatus.BAD_REQUEST)
-        if (userDto.code !== phoneCode?.code) throw new HttpException(`Некорректный код`, HttpStatus.BAD_REQUEST)
+        if (userDto.code !== phoneCode?.code) throw new HttpException(`Неверный код`, HttpStatus.BAD_REQUEST)
 
         phoneCode.destroy()
 

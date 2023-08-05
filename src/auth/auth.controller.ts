@@ -31,4 +31,10 @@ export class AuthController {
     auth(@Req() req) {
         return this.authService.auth(req.user.id)
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('/roles')
+    getRoles(@Req() req) {
+        return this.authService.getRoles(req.user.id)
+    }
 }

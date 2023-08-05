@@ -5,5 +5,5 @@ export class CreateUserDto {
     readonly phone: string
 
     @ApiProperty({ example: 'Надежда', description: 'User name' })
-    readonly name: string
+    readonly name?: string
 }

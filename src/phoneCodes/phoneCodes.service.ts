@@ -41,7 +41,7 @@ export class PhoneCodesService {
         //             await this.replace(
         //                 this.phoneCodesRepository,
         //                 ip,
-        //                 new Date(Date.now() + 1000 * 60 * 60 * 24 * 14),
+        //                 new Date(Date.now() + 1000 * 60 * 5),
         //                 phone,
         //                 d.code,
         //             )
@@ -53,7 +53,7 @@ export class PhoneCodesService {
 
         await replace(this.phoneCodesRepository, {
             ip,
-            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 14),
+            expiresAt: new Date(Date.now() + 1000 * 60 * 5),
             phone,
             code: '1234',
         })

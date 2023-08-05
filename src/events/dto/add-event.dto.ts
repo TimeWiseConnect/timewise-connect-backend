@@ -1,8 +1,12 @@
-import { CreateChildren } from 'src/childrens/dto/create-children.dto'
-
 export class AddEventDto {
-    readonly phone: string
-    readonly request: string
-    readonly name: string
-    readonly children?: CreateChildren
+    name: string
+    childName?: string
+    disability: boolean
+    grade: number
+    request: string
+    call: boolean
+    sms: boolean
+    messenger: boolean
+    phone: string
+    comment?: string
 }

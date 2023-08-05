@@ -3,7 +3,6 @@ import { ApiProperty } from '@nestjs/swagger'
 import { User } from 'src/users/user.model'
 import { UserEvent } from './dto/user-event.dto'
 import { ShortEvent } from './dto/event.dto'
-import { Children } from 'src/childrens/children.model'
 
 interface EventCreationAttrs {
     dateTime: Date
@@ -16,28 +15,41 @@ export class Event extends Model<Event, EventCreationAttrs> {
     @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
     id: number
 
-    // @ApiProperty({ example: 'email@email.com', description: 'User email' })
-    @Column({ type: DataType.STRING })
-    name: string
+    @Column({ type: DataType.DATE, unique: true, allowNull: false })
+    dateTime: Date
 
     @Column({ type: DataType.BOOLEAN, defaultValue: true })
     isAvailable: boolean
 
-    @Column({ type: DataType.BOOLEAN, defaultValue: false })
-    isApproved: boolean
+    @Column({ type: DataType.STRING })
+    name: string
 
-    // @ApiProperty({ example: 'qwerty', description: 'User password' })
+    @Column({ type: DataType.STRING })
+    childName: string
+
+    @Column({ type: DataType.INTEGER })
+    grade: number
+
+    @Column({ type: DataType.BOOLEAN })
+    disability: boolean
+
     @Column({ type: DataType.TEXT })
     request: string
 
-    @Column({ type: DataType.DATE, unique: true, allowNull: false })
-    dateTime: Date
+    @Column({ type: DataType.BOOLEAN })
+    call: boolean
+
+    @Column({ type: DataType.BOOLEAN })
+    sms: boolean
+
+    @Column({ type: DataType.BOOLEAN })
+    messenger: boolean
 
     @Column({ type: DataType.STRING })
     phone: string
 
-    @Column({ type: DataType.INTEGER })
-    childGrade: number
+    @Column({ type: DataType.TEXT })
+    comment: string
 
     @BelongsTo(() => User)
     user: User
@@ -46,25 +58,18 @@ export class Event extends Model<Event, EventCreationAttrs> {
     @Column({ type: DataType.INTEGER, allowNull: true })
     userId: number
 
-    @BelongsTo(() => Children)
-    children: Children
-
-    @ForeignKey(() => Children)
-    @Column({ type: DataType.INTEGER, allowNull: true })
-    childrenId: number
-
-    convertEventToUserEvent(event: Event): UserEvent {
-        const { id, dateTime, name, isApproved, isAvailable, request, phone, childGrade } = event
+    convertEventToUserEvent(): UserEvent {
+        const { id, dateTime, name, isAvailable, request, phone, grade, userId } = this
 
         const userEvent: UserEvent = {
             id,
             dateTime,
             name,
-            isApproved,
             isAvailable,
             request,
             phone,
-            childGrade,
+            grade,
+            userId,
         }
 
         return userEvent

@@ -12,12 +12,12 @@ export class JwtAuthGuard implements CanActivate {
         const req = context.switchToHttp().getRequest()
         try {
             const checkUser = this.reflector.get<boolean>(CHECK_USER_KEY, context.getHandler())
-            const authHeader = req.headers.authorization
+            const authHeader = req.headers?.authorization
             if (checkUser) return this.checkUser(authHeader, req)
             return this.defaultGuard(authHeader, req)
         } catch (e) {
             console.log(e)
-            throw new UnauthorizedException('Unauthorized')
+            throw new UnauthorizedException(e.message)
         }
     }
 
@@ -36,6 +36,7 @@ export class JwtAuthGuard implements CanActivate {
     }
 
     checkUser = (authHeader: string, req) => {
+        console.log(authHeader)
         if (!authHeader) {
             req.user = null
             return true
