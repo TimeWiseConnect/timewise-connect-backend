@@ -14,6 +14,9 @@ import { PhoneCodesModule } from './phoneCodes/phoneCodes.module'
 
 @Module({
     imports: [
+        ConfigModule.forRoot({
+            envFilePath: `.${process.env.NODE_ENV}.env`,
+        }),
         SequelizeModule.forRoot({
             dialect: 'postgres',
             host: process.env.POSTGRES_HOST,
