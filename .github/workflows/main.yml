@@ -32,4 +32,4 @@ jobs:
                   REMOTE_USER: ${{ secrets.REMOTE_USER }}
                   SOURCE: 'dist/'
                   TARGET: '/root/timewise-connect-backend/dist'
-                  EXCLUDE: '/dist/, /node_modules/'
+                  EXCLUDE: '/node_modules/'

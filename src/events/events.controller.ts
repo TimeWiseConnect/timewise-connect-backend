@@ -31,9 +31,11 @@ export class EventsController {
         return this.eventService.getEvents(req?.user)
     }
 
+    @UseGuards(JwtAuthGuard)
+    @checkUser()
     @Get(':id')
-    get(@Param('id') id: number) {
-        return this.eventService.getEventInfo(id)
+    get(@Param('id') id: number, @Req() req) {
+        return this.eventService.getEventInfo(id, req?.user)
     }
 
     @UseGuards(RolesGuard)

@@ -73,10 +73,21 @@ export class EventsService {
         return ShortEvents
     }
 
-    async getEventInfo(id: number): Promise<Event> {
+    async getEventInfo(id: number, currentUser: User) {
         const event = await this.getEventById(id)
+
         if (!event) throw new HttpException(`Event not found`, HttpStatus.BAD_REQUEST)
-        return event
+
+        if (currentUser?.roles.some((role) => ['ADMIN'].includes(role.value))) {
+            return event
+        }
+
+        if (currentUser?.roles.some((role) => ['USER'].includes(role.value))) {
+            const userEvent: UserEvent = event.convertEventToUserEvent()
+            return userEvent
+        }
+        const shortEvent = event.convertEventToShortEvent()
+        return shortEvent
     }
 
     async removeEvent(id: number) {
@@ -86,7 +97,7 @@ export class EventsService {
     }
 
     async getEventById(id: number) {
-        const event = await this.eventRepository.findOne({ where: { id }, include: { all: true } })
+        const event = await this.eventRepository.findOne({ where: { id } })
         return event
     }
 
