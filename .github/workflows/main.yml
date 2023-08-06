@@ -31,5 +31,5 @@ jobs:
                   REMOTE_HOST: ${{ secrets.SERVER_IP }}
                   REMOTE_USER: ${{ secrets.REMOTE_USER }}
                   SOURCE: 'dist/'
-                  TARGET: '/root/tws/dist'
+                  TARGET: '/root/timewise-connect-backend/dist'
                   EXCLUDE: '/node_modules/'
