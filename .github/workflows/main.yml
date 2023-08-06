@@ -33,3 +33,6 @@ jobs:
                   SOURCE: 'dist/'
                   TARGET: '/root/timewise-connect-backend/dist'
                   EXCLUDE: '/node_modules/'
+
+            - name: Restart server
+              run: pm2 restart twcb
