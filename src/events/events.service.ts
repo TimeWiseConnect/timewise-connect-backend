@@ -51,6 +51,7 @@ export class EventsService {
         event.messenger = dto.messenger
         event.comment = dto.comment
         await event.save()
+        await user.save()
 
         return event
     }
