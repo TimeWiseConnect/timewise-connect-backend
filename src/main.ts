@@ -1,18 +1,11 @@
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
-import * as fs from 'fs'
 
 const start = async () => {
     try {
-        const PORT = process.env.PORT || 5000
-        const httpsOptions = {
-            key: fs.readFileSync('./secrets/private-key.pem'),
-            cert: fs.readFileSync('./secrets/public-certificate.pem'),
-        }
-        const app = await NestFactory.create(AppModule, {
-            httpsOptions,
-        })
+        const PORT = 7000
+        const app = await NestFactory.create(AppModule)
         app.enableCors()
         const config = new DocumentBuilder()
             .setTitle('TimeWise Connect')
