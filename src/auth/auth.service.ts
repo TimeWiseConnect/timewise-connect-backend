@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { UsersService } from 'src/users/users.service'
 import { JwtService } from '@nestjs/jwt'
 import { User } from 'src/users/user.model'
-import { LogInDto, RegistrationDto, ValidateUserDto } from './dto/auth.dto'
+import { LogInDto, ValidateUserDto } from './dto/auth.dto'
 import { PhoneCodesService } from 'src/phoneCodes/phoneCodes.service'
 
 @Injectable()
@@ -13,34 +13,19 @@ export class AuthService {
         private jwtService: JwtService,
     ) {}
 
-    async registration(userDto: RegistrationDto, userIp: string) {
-        const phone = userDto.phone.replace(/\D/g, '')
-        if (phone.length !== 10) throw new HttpException(`Укажите корректный номер телефона`, HttpStatus.BAD_REQUEST)
-        if (!userDto.name) throw new HttpException(`Укажите ваше имя`, HttpStatus.BAD_REQUEST)
-
-        const candidate = await this.userService.getUserByPhone(phone)
-        if (candidate)
-            throw new HttpException(`Пользователь с номером +7${userDto.phone} уже существует`, HttpStatus.BAD_REQUEST)
-
-        await this.userService.createUser({
-            ...userDto,
-            phone: phone,
-        })
-
-        this.phoneCodesService.callUser(phone, userIp)
-        return
-    }
-
     async login(userDto: LogInDto, userIp: string) {
         const phone = userDto.phone.replace(/\D/g, '')
 
         if (phone.length !== 10) throw new HttpException(`Укажите корректный номер телефона`, HttpStatus.BAD_REQUEST)
 
         const user = await this.userService.getUserByPhone(phone)
-        if (!user)
+        if (!user) {
+            if (!userDto.name) throw new HttpException(`Укажите ваше имя`, HttpStatus.BAD_REQUEST)
+
             await this.userService.createUser({
-                phone: phone,
+                ...userDto,
             })
+        }
 
         this.phoneCodesService.callUser(phone, userIp)
         return

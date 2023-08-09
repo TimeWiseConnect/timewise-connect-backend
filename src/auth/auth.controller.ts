@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Req, UseGuards, Ip, HttpCode } from '@nest
 import { ApiTags } from '@nestjs/swagger'
 import { AuthService } from './auth.service'
 import { JwtAuthGuard } from './jwt-auth.guard'
-import { LogInDto, RegistrationDto, ValidateUserDto } from './dto/auth.dto'
+import { LogInDto, ValidateUserDto } from './dto/auth.dto'
 
 @ApiTags('Authorization')
 @Controller('api/auth')
@@ -13,12 +13,6 @@ export class AuthController {
     @HttpCode(200)
     login(@Body() userDto: LogInDto, @Ip() ip) {
         return this.authService.login(userDto, ip)
-    }
-
-    @Post('/reg')
-    @HttpCode(200)
-    registration(@Body() userDto: RegistrationDto, @Ip() ip) {
-        return this.authService.registration(userDto, ip)
     }
 
     @Post('/validate')
